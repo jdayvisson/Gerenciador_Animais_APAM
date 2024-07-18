@@ -1,9 +1,10 @@
 import flet as ft
 import datetime
 
+
 def main(page: ft.Page):
 
-    class Example(ft.Column): #botao calendario
+    class Example(ft.Column):  # botao calendario
         def __init__(self):
             super().__init__()
             self.datepicker = ft.DatePicker(
@@ -17,9 +18,9 @@ def main(page: ft.Page):
                 content=ft.Row(
                     controls=[
                         ft.Text("Data castração"),
-                        ft.Icon(ft.icons.CALENDAR_TODAY_OUTLINED, size=24)
+                        ft.Icon(ft.icons.CALENDAR_TODAY_OUTLINED, size=24),
                     ],
-                    alignment="center"
+                    alignment="center",
                 ),
                 bgcolor=ft.colors.WHITE,
                 color=ft.colors.BLACK,
@@ -31,38 +32,54 @@ def main(page: ft.Page):
             self.datepicker.pick_date()
 
         def change_date(self, e):
-            self.selected_date.value = f"Data selecionada: {e.control.value.strftime('%Y-%m-%d')}"
-            page.update()  
+            self.selected_date.value = (
+                f"Data selecionada: {e.control.value.strftime('%Y-%m-%d')}"
+            )
+            page.update()
+
     example = Example()
 
     icon_return = ft.Container(
         content=ft.Icon(ft.icons.HOME_OUTLINED, size=24, color=ft.colors.BLACK),
         alignment=ft.alignment.center_left,
-        url="#"
+        url="#",
     )
 
     img_perfil = ft.Container(
         ft.Image(
-            src="https://picsum.photos/600/600",
+            src="assets/logo.png",
             width=120,
             height=120,
             border_radius=100,
         )
     )
 
+    # JOTA: <FUNÇÃO PARA ATUALIZAR A IMAGEM DO PERFIL CADASTRADO - "DO ANIMAL NO CASO">
+    def perfil_picked(e):
+        if e.files:
+            img_perfil.content.src = e.files[0].path
+            img_perfil.update()
+
+    file_picker = ft.FilePicker(on_result=perfil_picked)
+
     upload_img = ft.Container(
-        col=8,
+        col=20,
         content=ft.Row(
             controls=[
-                ft.Text("Carregar foto"),
-                ft.Icon(ft.icons.FOLDER_OPEN_OUTLINED, color=ft.colors.BLACK)
+                # ft.Text("Carregar foto"), # JOTA: <NÃO É NECESSÁRIO>
+                # ft.Icon(ft.icons.FOLDER_OPEN_OUTLINED, color=ft.colors.BLACK) # JOTA: <NÃO É NECESSÁRIO>
+                # JOTA: <ADICIONA UM BOLTÃO PARA ABRIR O SELETOR DE AQUIVO PARA UPAR A IMAGEM>
+                ft.ElevatedButton(
+                    "Escolher Foto",
+                    on_click=lambda _: file_picker.pick_files(allow_multiple=False),
+                )
             ],
-            alignment=ft.MainAxisAlignment.CENTER  # Centraliza o conteúdo do Row
+            alignment=ft.MainAxisAlignment.CENTER,  # Centraliza o conteúdo do Row
         ),
         width=126,
-        bgcolor="#D9D9D9"
+        # bgcolor="#D9D9D9" # JOTA: <NÃO É NECESSÁRIO>
     )
-  
+
     animal_castrado = ft.Dropdown(
         width=172,
         options=[
@@ -71,15 +88,15 @@ def main(page: ft.Page):
         ],
         value="Castrado",
         alignment=ft.alignment.center,
-        border_radius=8
+        border_radius=8,
     )
 
     campo_obs_cad = ft.Container(
-            ft.TextField(
+        ft.TextField(
             value="",
             hint_text="Observações castração",
-            width=172,height=143,
-            
+            width=172,
+            height=143,
         ),
     )
 
@@ -94,13 +111,13 @@ def main(page: ft.Page):
             example.date_button,  # calendario
             example.selected_date,  # calendario
             example.datepicker,  # calendario
-            campo_obs_cad
-        ]
+            campo_obs_cad,
+        ],
     )
 
     nome_protegido = ft.TextField(
         col=4,
-        label="Nome do protegido", 
+        label="Nome do protegido",
         value="",
         width=172,
         height=56,
@@ -114,14 +131,14 @@ def main(page: ft.Page):
             ft.dropdown.Option("Gênero"),
             ft.dropdown.Option("Masc."),
             ft.dropdown.Option("Fem."),
-            ft.dropdown.Option("Desc.")
+            ft.dropdown.Option("Desc."),
         ],
         value="Gênero",
-        border_radius=8
+        border_radius=8,
     )
 
     temperamento = ft.Dropdown(
-        col= 4,
+        col=4,
         width=172,
         options=[
             ft.dropdown.Option("Temperamento"),
@@ -132,17 +149,15 @@ def main(page: ft.Page):
             ft.dropdown.Option("Dócil e convive com outros"),
             ft.dropdown.Option("Sem Reação"),
             ft.dropdown.Option("Outro"),
-
         ],
         value="Temperamento",
         alignment=ft.alignment.center,
-        border_radius=8
-
+        border_radius=8,
     )
 
     especie = ft.TextField(
         col=4,
-        label="Especie", 
+        label="Especie",
         value="",
         width=172,
         height=56,
@@ -150,7 +165,7 @@ def main(page: ft.Page):
     )
 
     pelagem = ft.Dropdown(
-        col=4,  
+        col=4,
         width=172,
         options=[
             ft.dropdown.Option("Pelagem"),
@@ -168,20 +183,20 @@ def main(page: ft.Page):
             ft.dropdown.Option("Sem Pelagem"),
             ft.dropdown.Option("Escama"),
             ft.dropdown.Option("Outros"),
-        ],  
-        value="Pelagem",  
-        border_radius=8, 
+        ],
+        value="Pelagem",
+        border_radius=8,
     )
 
-    raca =  ft.TextField(
+    raca = ft.TextField(
         col=4,
-        label="Raça", 
+        label="Raça",
         value="",
         width=172,
         height=56,
         border_radius=8,
     )
-    
+
     porte = ft.Dropdown(
         col=4,
         width=172,
@@ -189,10 +204,10 @@ def main(page: ft.Page):
             ft.dropdown.Option("Porte"),
             ft.dropdown.Option("Pequeno"),
             ft.dropdown.Option("Médio"),
-            ft.dropdown.Option("Grande")
+            ft.dropdown.Option("Grande"),
         ],
         value="Porte",
-        border_radius=8
+        border_radius=8,
     )
 
     status_atual = ft.Dropdown(
@@ -202,10 +217,12 @@ def main(page: ft.Page):
             ft.dropdown.Option("Status Atual"),
             ft.dropdown.Option("Abrigado"),
             ft.dropdown.Option("Adotado"),
-            ft.dropdown.Option("Óbito") #Quando o status é mudado para óbito um campo data de óbito e observações de óbito devem aparecer para serem preenchidos
+            ft.dropdown.Option(
+                "Óbito"
+            ),  # Quando o status é mudado para óbito um campo data de óbito e observações de óbito devem aparecer para serem preenchidos
         ],
         value="Status Atual",
-        border_radius=8
+        border_radius=8,
     )
 
     mocrochip = ft.Dropdown(
@@ -217,31 +234,30 @@ def main(page: ft.Page):
             ft.dropdown.Option("Não"),
         ],
         value="Microchip",
-        border_radius=8
+        border_radius=8,
     )
 
     possui_seq = ft.Dropdown(
-            col=4,
-            width=172,
-            options=[
-                ft.dropdown.Option("Possui sequela"),
-                ft.dropdown.Option("Sim"),
-                ft.dropdown.Option("Não"),
-            ],
-            value="Possui sequela",
-            border_radius=8,
-            
-        )
-    
+        col=4,
+        width=172,
+        options=[
+            ft.dropdown.Option("Possui sequela"),
+            ft.dropdown.Option("Sim"),
+            ft.dropdown.Option("Não"),
+        ],
+        value="Possui sequela",
+        border_radius=8,
+    )
+
     idade = ft.TextField(
-            col=3,
-            label="Idade ", 
-            value="",
-            width=109,
-            height=56,
-            border_radius=8,
-        )
-    
+        col=3,
+        label="Idade ",
+        value="",
+        width=109,
+        height=56,
+        border_radius=8,
+    )
+
     idade_tipo = ft.Dropdown(
         col=1,
         width=172,
@@ -251,15 +267,13 @@ def main(page: ft.Page):
             ft.dropdown.Option("Meses"),
         ],
         value="Tipo",
-        border_radius=8
+        border_radius=8,
     )
-
 
     info_insert = ft.Container(
         padding=80,
         col=12,
-        content= ft.ResponsiveRow(
-            
+        content=ft.ResponsiveRow(
             controls=[
                 nome_protegido,
                 genero,
@@ -271,45 +285,37 @@ def main(page: ft.Page):
                 status_atual,
                 mocrochip,
                 possui_seq,
-                idade, idade_tipo
+                idade,
+                idade_tipo,
             ]
-        )
+        ),
     )
 
     info_obs = ft.Container(
         col=12,
-        content= ft.TextField(
-            label="Observações", 
+        content=ft.TextField(
+            label="Observações",
             value="",
-            
         ),
         width=300,
-        height=155
-    ) 
-                                
-
-    infos_add = ft.ResponsiveRow(
-        col=9,
-        controls=[
-           info_insert,
-           info_obs
-        ],
-        expand=True
+        height=155,
     )
 
+    infos_add = ft.ResponsiveRow(col=9, controls=[info_insert, info_obs], expand=True)
 
     layout = ft.ResponsiveRow(
         col=12,
         controls=[
             basic_info,
             infos_add,
-            
         ],
-        expand=True
+        expand=True,
     )
 
-    page.add( 
-        layout,
-    )
+    page.overlay.append(
+        file_picker
+    )  # JOTA: <CÓDIGO PARA FAZER A FUNÇÃO FILEPICKER APARECER NA PÁGINA DA APLICAÇÃO>
+    page.add(layout)
+
 
 ft.app(target=main)
